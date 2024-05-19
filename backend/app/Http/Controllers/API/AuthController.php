@@ -12,14 +12,16 @@ class AuthController extends Controller
     public function register(Request $request){
         // validation the requirements of request body
         $payload = $request->validate([
-            "name"=>"request|min:2|max:60",
-            "email"=>"request|email|unique:users,email",
-            "password"=>"request|min:6|max:50|confirmed"
+            "name" => "required|min:2|max:60",
+            "email" => "required|email|unique:users,email",
+            "password" => "required|min:6|max:50|confirmed"
         ]);
+
+        // dd("<<<<<<<<<<");
 
         // Try To Create User
         try{
-            $payload['password']= Hash::make($payload['password']);
+            $payload['password'] = Hash::make($payload['password']);
             User::create($payload);
             return response()->json(["status"=>200,"message"=>"User Created Successfully"]);
         }
